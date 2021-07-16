@@ -3,15 +3,15 @@ import React from "react";
 function CreatePostSection(params: type) {
   return (
     <section className="create-post-section">
-      <form id="create-post-form" autocomplete="off">
+      <form id="create-post-form" autoComplete="off">
         <h2>Create a post</h2>
-        <label for="image">Image</label>
+        <label htmlFor="image">Image</label>
         <input id="image" name="image" type="text" />
-        <label for="title">Title</label>
+        <label htmlFor="title">Title</label>
         <input id="title" name="title" type="text" />
-        <label for="content">Content</label>
+        <label htmlFor="content">Content</label>
         <textarea id="content" name="content" rows="2" columns="30"></textarea>
-        <div class="action-btns">
+        <div className="action-btns">
           <button id="preview-btn" type="button">
             Preview
           </button>

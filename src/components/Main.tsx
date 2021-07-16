@@ -1,13 +1,27 @@
-import React from "react";
-function Main() {
+import React, { SyntheticEvent } from "react";
+import CreatePostSection from "./CreatePostSection";
+import Feed from "./Feed";
+import { Users } from "../App";
+import { User } from "../App";
+import { Posts } from "../App";
+
+type MainProps = {
+  users: Users;
+  selectedUser: User;
+  posts: Posts;
+  submitComment: (e: SyntheticEvent) => string;
+};
+
+function Main({ users, selectedUser, posts, submitComment }: MainProps) {
   return (
     <main className="wrapper">
-      <section className="create-post-section">
-        {/* <!-- Go to create-post-section.html for the template --> */}
-      </section>
-      <section className="feed">
-        {/* <!-- Go to feed.html for the template --> */}
-      </section>
+      <CreatePostSection />
+      <Feed
+        users={users}
+        selectedUser={selectedUser}
+        posts={posts}
+        submitComment={submitComment}
+      />
     </main>
   );
 }

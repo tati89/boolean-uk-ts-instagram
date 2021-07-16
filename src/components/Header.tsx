@@ -1,23 +1,28 @@
 import React from "react";
-type HeadeProps = {
-  users: User[] | null;
-  electedUser: User | null;
+import { Users } from "../App";
+import { User } from "../App";
+
+type HeaderProps = {
+  users: Users;
+  selectedUser: User;
+  changeUser: (arg: User) => User;
 };
 
-function Header({ users, selectedUser }) {
+function Header({ users, selectedUser, changeUser }: HeaderProps) {
   return (
     <header className="main-header">
       <div className="wrapper">
         {users.map((user) => (
-          <div
+          <button
             key={user.username}
-            className={selectedUser ? "chip active" : "chip"}
+            onClick={() => changeUser(user)}
+            className={selectedUser === user ? "chip active" : "chip"}
           >
             <div className="avatar-small">
               <img src={user.avatar} alt={user.username} />
             </div>
             <span>{user.username}</span>
-          </div>
+          </button>
         ))}
       </div>
     </header>
