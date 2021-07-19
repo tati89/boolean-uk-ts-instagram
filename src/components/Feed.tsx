@@ -1,21 +1,85 @@
-import React, { useState } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { Users } from "../App";
 import { User } from "../App";
 import { Posts } from "../App";
-import Form from "./Form";
+import { Comments } from "../App";
+import { Comment } from "../App";
+
+type Post = {
+  id: number;
+  title: string;
+  content: string;
+  image: {
+    src: string;
+    alt: string;
+  };
+  likes: number;
+  userId: number;
+  comments: {
+    id: number;
+    content: string;
+    userId: number;
+    postId: number;
+  };
+};
+
+type Comment = {
+  id: number;
+  content: string;
+  userId: number;
+  postId: number;
+};
 
 type FeedProps = {
   users: Users;
   selectedUser: User;
   posts: Posts;
-  submitComment: () => void;
+  comments: Comments;
+  setComments: (arg: Comment[]) => void;
 };
 
-function Feed({ users, selectedUser, posts, submitComment }: FeedProps) {
+function Feed({
+  users,
+  selectedUser,
+  posts,
+  comments,
+  setComments,
+}: FeedProps) {
+  const [inputComment, setInputComment] = useState<string | null | undefined>(
+    ""
+  );
+
   let userPosts: Posts = [];
   if (selectedUser !== null) {
     userPosts = posts.filter((post) => post.userId === selectedUser.id);
   }
+
+  const submitHandler = (
+    event: React.ChangeEvent<HTMLFormElement>,
+    post: Post
+  ) => {
+    event.preventDefault();
+
+    const comment = {
+      content: inputComment,
+      userId: selectedUser?.id,
+      postId: post.id,
+    };
+
+    fetch("http://localhost:4000/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(comment),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then((comment) => setComments([...comments, comment]));
+
+    event.target.reset();
+  };
 
   return (
     <section className="feed">
@@ -48,7 +112,20 @@ function Feed({ users, selectedUser, posts, submitComment }: FeedProps) {
                   </div>
                 );
               })}
-              <Form submitComment={submitComment} />
+              <form
+                onSubmit={(e) => submitHandler(e, post)}
+                id="create-comment-form"
+                autoComplete="off"
+              >
+                <label htmlFor="comment">Add comment</label>
+                <input
+                  onChange={(e) => setInputComment(e.target.value)}
+                  id="comment"
+                  name="comment"
+                  type="text"
+                />
+                <button type="submit">Comment</button>
+              </form>
             </div>
           </li>
         ))}

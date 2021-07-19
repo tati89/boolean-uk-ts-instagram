@@ -35,33 +35,28 @@ export type Posts = {
   }[];
 }[];
 
+export type Comment = {
+  id: number;
+  content: string;
+  userId: number;
+  postId: number;
+};
+
+export type Comments = {
+  id: number;
+  content: string;
+  userId: number;
+  postId: number;
+}[];
+
 function App() {
   const [users, setUsers] = useState<Users>([]);
   const [posts, setPosts] = useState<Posts>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [selectedUser, setSelectedUser] = useState<User>(null);
 
   function changeUser(user: User) {
     setSelectedUser(user);
-  }
-
-  function submitComment(event: SyntheticEvent) {
-    event.preventDefault();
-    console.log(event);
-
-    // const comment = {
-    //   content: event.comment.value,
-    //   userId: selectedUser?.id,
-    //   postId: post.id,
-    // };
-    // fetch("http://localhost:4000/comments", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(comment),
-    // }).then(function (response) {
-    //   return response.json();
-    // });
   }
 
   useEffect(() => {
@@ -72,6 +67,10 @@ function App() {
     fetch("http://localhost:4000/posts")
       .then((response) => response.json())
       .then((data) => setPosts(data));
+
+    fetch("http://localhost:4000/comments")
+      .then((response) => response.json())
+      .then((data) => setComments(data));
   }, []);
 
   return (
@@ -86,7 +85,8 @@ function App() {
           users={users}
           selectedUser={selectedUser}
           posts={posts}
-          submitComment={submitComment}
+          comments={comments}
+          setComments={setComments}
         />
       </div>
     </>

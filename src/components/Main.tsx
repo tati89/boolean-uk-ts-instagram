@@ -4,15 +4,23 @@ import Feed from "./Feed";
 import { Users } from "../App";
 import { User } from "../App";
 import { Posts } from "../App";
+import { Comments } from "../App";
 
 type MainProps = {
   users: Users;
   selectedUser: User;
   posts: Posts;
-  submitComment: (e: SyntheticEvent) => string;
+  comments: Comments;
+  setComments: () => void;
 };
 
-function Main({ users, selectedUser, posts, submitComment }: MainProps) {
+function Main({
+  users,
+  selectedUser,
+  posts,
+  comments,
+  setComments,
+}: MainProps) {
   return (
     <main className="wrapper">
       <CreatePostSection />
@@ -20,7 +28,8 @@ function Main({ users, selectedUser, posts, submitComment }: MainProps) {
         users={users}
         selectedUser={selectedUser}
         posts={posts}
-        submitComment={submitComment}
+        comments={comments}
+        setComments={setComments}
       />
     </main>
   );
